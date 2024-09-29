@@ -9,6 +9,8 @@ export default function FormLevel1() {
     const [showImage, setShowImage] = useState(false);
     const navigation = useNavigation();
 
+    
+
     const navigateToProfile = () => {
         navigation.navigate('FormProfile');
     };
@@ -60,7 +62,7 @@ export default function FormLevel1() {
     const handleLongPress = () => {
         Alert.alert(
             "Añadir al diccionario",
-            "¿Deseas añadir la letra Ñ al diccionario?",
+            "¿Deseas añadir la letra niño al diccionario?",
             [
                 { text: "Cancelar", style: "cancel" },
                 { text: "Añadir", onPress: () => console.log("Letra añadida al diccionario") }

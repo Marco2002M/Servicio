@@ -1,133 +1,150 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import UserService from './Services/UserService';
 import { FontAwesome } from '@expo/vector-icons';
 
 export default function FormSignUp() {
-  const [name, setName] = useState('');
-  const [age, setAge] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [step, setStep] = useState(1);
-  const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const navigation = useNavigation();
+    const [name, setName] = useState('');
+    const [age, setAge] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [step, setStep] = useState(1);
+    const [secureTextEntry, setSecureTextEntry] = useState(true);
+    const navigation = useNavigation();
 
-  const handleContinue = () => {
-    if (step === 1 && name.trim() === '') {
-      Alert.alert('Error', 'Por favor, ingresa tu nombre.');
-      return;
-    }
-    if (step === 2 && age.trim() === '') {
-      Alert.alert('Error', 'Por favor, ingresa tu edad.');
-      return;
-    }
-    if (step === 3 && !email.endsWith('@gmail.com') && !email.endsWith('@outlook.com')) {
-      Alert.alert('Error', 'Por favor, ingresa un correo electrónico con el dominio @gmail.com o @outlook.com');
-      return;
-    }
-    if (step === 4 && password.trim() === '') {
-      Alert.alert('Error', 'Por favor, ingresa tu contraseña.');
-      return;
-    }
-    // Validaciones adicionales para la contraseña
-    if (step === 4 && !/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
-      Alert.alert('Error', 'La contraseña debe incluir al menos un carácter especial.');
-      return;
-    }
-    if (step === 4 && /([0-9])\1{1,}/.test(password)) {
-      Alert.alert('Error', 'La contraseña no puede contener números consecutivos.');
-      return;
-    }
-
-    if (step < 4) {
-      setStep(step + 1);
-    } else {
-      navigation.navigate('FormHome'); // Navega a FormHome después de completar el formulario
-    }
+    const handleContinue = async () => {
+      if (step === 1 && name.trim() === '') {
+          Alert.alert('Error', 'Por favor, ingresa tu nombre.');
+          return;
+      }
+      if (step === 2 && age.trim() === '') {
+          Alert.alert('Error', 'Por favor, ingresa tu edad.');
+          return;
+      }
+      if (step === 3 && !email.endsWith('@gmail.com') && !email.endsWith('@outlook.com')) {
+          Alert.alert('Error', 'Por favor, ingresa un correo electrónico con el dominio @gmail.com o @outlook.com');
+          return;
+      }
+      if (step === 4 && password.trim() === '') {
+          Alert.alert('Error', 'Por favor, ingresa tu contraseña.');
+          return;
+      }
+      // Validaciones adicionales para la contraseña
+      if (step === 4 && !/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
+          Alert.alert('Error', 'La contraseña debe incluir al menos un carácter especial.');
+          return;
+      }
+      if (step === 4 && /([0-9])\1{1,}/.test(password)) {
+          Alert.alert('Error', 'La contraseña no puede contener números consecutivos.');
+          return;
+      }
+  
+      if (step < 4) {
+          setStep(step + 1);
+      } else {
+          // Verificar si el correo ya está registrado
+          try {
+              const emailExists = await UserService.emailExists(email);
+              if (emailExists) {
+                  Alert.alert('Error', 'El correo electrónico ya está registrado.');
+                  return;
+              }
+  
+              // Cuando el formulario está completo, llamamos al servicio para crear un nuevo usuario
+              const userData = { name, age, email, password };
+              await UserService.create(userData);
+              Alert.alert('Éxito', 'Usuario creado exitosamente!');
+              navigation.navigate('FormHome'); // Navega a FormHome después de completar el formulario
+          } catch (error) {
+              Alert.alert('Correo existente', 'Favor de ingresar otro correo no registrado');
+              console.error(error);
+          }
+      }
   };
 
-  const toggleSecureTextEntry = () => {
-    setSecureTextEntry(!secureTextEntry);
-  };
+    const toggleSecureTextEntry = () => {
+        setSecureTextEntry(!secureTextEntry);
+    };
 
+    const progress = step / 4;
 
-  const progress = step / 4;
+    const stepTexts = {
+        1: "¿Cómo te llamas?",
+        2: "¿Cuál es tu edad?",
+        3: "¿Cuál es tu correo electrónico?",
+        4: "Crea una contraseña",
+    };
 
-  const stepTexts = {
-    1: "¿Cómo te llamas?",
-    2: "¿Cuál es tu edad?",
-    3: "¿Cuál es tu correo electrónico?",
-    4: "Crea una contraseña",
-  };
+    return (
+        <View style={styles.container}>
+            <View style={styles.progressBarContainer}>
+                <View style={[styles.progressBar, { width: `${progress * 100}%` }]} />
+            </View>
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.progressBarContainer}>
-        <View style={[styles.progressBar, { width: `${progress * 100}%` }]} />
-      </View>
+            <Text style={styles.titulo}>Crea tu perfil</Text>
+            <Text style={styles.subtitulo2}>{stepTexts[step]}</Text>
 
-      <Text style={styles.titulo}>Crea tu perfil</Text>
-      <Text style={styles.subtitulo2}>{stepTexts[step]}</Text>
+            {step === 1 && (
+                <TextInput
+                    style={styles.input}
+                    placeholder="Nombre"
+                    value={name}
+                    onChangeText={setName}
+                    keyboardType="default"
+                    autoCapitalize="none"
+                />
+            )}
 
-      {step === 1 && (
-        <TextInput
-          style={styles.input}
-          placeholder="Nombre"
-          value={name}
-          onChangeText={setName}
-          keyboardType="default"
-          autoCapitalize="none"
-        />
-      )}
+            {step === 2 && (
+                <TextInput
+                    style={styles.input}
+                    placeholder="Edad"
+                    value={age}
+                    onChangeText={setAge}
+                    keyboardType="numeric"
+                    autoCapitalize="none"
+                />
+            )}
 
-      {step === 2 && (
-        <TextInput
-          style={styles.input}
-          placeholder="Edad"
-          value={age}
-          onChangeText={setAge}
-          keyboardType="numeric"
-          autoCapitalize="none"
-        />
-      )}
+            {step === 3 && (
+                <TextInput
+                    style={styles.input}
+                    placeholder="Correo Electrónico"
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                />
+            )}
 
-      {step === 3 && (
-        <TextInput
-          style={styles.input}
-          placeholder="Correo Electrónico"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-      )}
+            {step === 4 && (
+                <View style={styles.passwordContainer}>
+                    <TextInput
+                        style={[styles.input, { flex: 1 }]}
+                        placeholder="Contraseña"
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry={secureTextEntry}
+                        autoCapitalize="none"
+                    />
+                    <TouchableOpacity onPress={toggleSecureTextEntry} style={styles.eyeIcon}>
+                        <FontAwesome
+                            name={secureTextEntry ? 'eye-slash' : 'eye'}
+                            size={24}
+                            color="gray"
+                        />
+                    </TouchableOpacity>
+                </View>
+            )}
 
-      {step === 4 && (
-        <View style={styles.passwordContainer}>
-          <TextInput
-            style={[styles.input, { flex: 1 }]}
-            placeholder="Contraseña"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={secureTextEntry}
-            autoCapitalize="none"
-          />
-         <TouchableOpacity onPress={toggleSecureTextEntry} style={styles.eyeIcon}>
-          <FontAwesome
-            name={secureTextEntry ? 'eye-slash' : 'eye'}
-            size={24}
-            color="gray"
-          />
-        </TouchableOpacity>
+            <TouchableOpacity onPress={handleContinue} style={styles.boton2}>
+                <Text style={styles.textoBoton}>Continuar</Text>
+            </TouchableOpacity>
         </View>
-      )}
-
-      <TouchableOpacity onPress={handleContinue} style={styles.boton2}>
-        <Text style={styles.textoBoton}>Continuar</Text>
-      </TouchableOpacity>
-    </View>
-  );
+    );
 }
+
 
 const styles = StyleSheet.create({
   container: {

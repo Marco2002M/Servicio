@@ -1,15 +1,28 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, Alert } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import UserService from './Services/UserService'; // Asegúrate de importar el servicio correctamente
 
 export default function FormLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const navigation = useNavigation();
-  const navigateToHome = () => {
-    navigation.navigate('FormHome');
+
+  const handleLogin = async () => {
+    try {
+      const userCredentials = { email, password };
+      const response = await UserService.login(userCredentials);
+      Alert.alert('Éxito', 'Inicio de sesión exitoso');
+      navigation.navigate('FormHome'); // Navega a FormHome después de iniciar sesión
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        Alert.alert('Error', 'Correo o contraseña incorrectos');
+      } else {
+        Alert.alert('Error', 'Ocurrió un error al iniciar sesión');
+      }
+    }
   };
 
   const toggleSecureTextEntry = () => {
@@ -47,7 +60,7 @@ export default function FormLogin() {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity onPress={navigateToHome}>
+      <TouchableOpacity onPress={handleLogin}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>Iniciar Sesión</Text>
         </View>
@@ -67,6 +80,7 @@ export default function FormLogin() {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
