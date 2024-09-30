@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 export default function FormHome() {
     const navigation = useNavigation();
+    const route = useRoute(); // Para obtener los parámetros pasados por navegación
+    const [userId, setUserId] = useState(null);
+
+    // Obtener el ID del usuario desde los parámetros de la ruta
+    useEffect(() => {
+        if (route.params && route.params.userId) {
+            setUserId(route.params.userId); // Asignar el ID del usuario
+        }
+    }, [route.params]);
 
     const navigateToProfile = () => {
         navigation.navigate('FormProfile');
@@ -18,10 +27,9 @@ export default function FormHome() {
         navigation.navigate('FormStories');
     };
     const navigateToHelp = () => {
-        navigation.navigate('FormL1');
+        navigation.navigate('FormHelp');
     };
 
-    // Navega a FormÑ en lugar de FormMissionX
     const navigateToMission = (missionNumber) => {
         navigation.navigate('FormL1');
     };
@@ -77,12 +85,17 @@ export default function FormHome() {
             {/* Iconos en las esquinas superiores */}
             <View style={styles.topIconsContainer}>
                 <TouchableOpacity onPress={navigateToHelp}>
-                    <Image source={require('./images/iconos/mapachin.png')} style={styles.topIcon} />
+                    <Image source={require('../images/iconos/mapachin.png')} style={styles.topIcon} />
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={navigateToProfile}>
-                    <Image source={require('./images/iconos/perfil.png')} style={styles.topIcon} />
+                    <Image source={require('../images/iconos/perfil.png')} style={styles.topIcon} />
                 </TouchableOpacity>
+            </View>
+
+            {/* Mostrar el ID del usuario */}
+            <View style={styles.userIdContainer}>
+                <Text style={styles.userIdText}>ID del usuario: {userId ? userId : 'Cargando...'}</Text>
             </View>
 
             {/* Mensaje de bienvenida */}
@@ -112,28 +125,28 @@ export default function FormHome() {
                 <View style={styles.iconContainer}>
                     <TouchableOpacity onPress={() => navigation.navigate('FormHome')}>
                         <View style={styles.iconWrapper}>
-                            <Image source={require('./images/iconos/inicio.png')} style={styles.icon} />
+                            <Image source={require('../images/iconos/inicio.png')} style={styles.icon} />
                             <Text style={styles.iconText}>Inicio</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={navigateToDiccionario}>
                         <View style={styles.iconWrapper}>
-                            <Image source={require('./images/iconos/libro.png')} style={styles.icon} />
+                            <Image source={require('../images/iconos/libro.png')} style={styles.icon} />
                             <Text style={styles.iconText}>Diccionario</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={navigateToMedals}>
                         <View style={styles.iconWrapper}>
-                            <Image source={require('./images/iconos/logros.png')} style={styles.icon} />
+                            <Image source={require('../images/iconos/logros.png')} style={styles.icon} />
                             <Text style={styles.iconText}>Logros</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={navigateToStories}>
                         <View style={styles.iconWrapper}>
-                            <Image source={require('./images/iconos/cuentos.png')} style={styles.icon} />
+                            <Image source={require('../images/iconos/cuentos.png')} style={styles.icon} />
                             <Text style={styles.iconText}>Cuentos</Text>
                         </View>
                     </TouchableOpacity>

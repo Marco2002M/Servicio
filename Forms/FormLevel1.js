@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, Alert, ProgressBarAndroid } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Audio } from 'expo-av';
+import WordService from '../Services/WordService';
 
 export default function FormLevel1() {
     const [step, setStep] = useState(1);
@@ -59,13 +60,30 @@ export default function FormLevel1() {
         setStep(step + 1);
     };
 
-    const handleLongPress = () => {
+    const handleLongPress = async () => {
+        const wordData = {
+            word: "niño", // La palabra que deseas añadir
+            user: {
+                idUser: 21 // Reemplaza con el ID del usuario actual
+            }
+        };
+    
         Alert.alert(
             "Añadir al diccionario",
             "¿Deseas añadir la letra niño al diccionario?",
             [
                 { text: "Cancelar", style: "cancel" },
-                { text: "Añadir", onPress: () => console.log("Letra añadida al diccionario") }
+                { 
+                    text: "Añadir", 
+                    onPress: async () => {
+                        try {
+                            await WordService.createWord(wordData);
+                            console.log("Letra añadida al diccionario");
+                        } catch (error) {
+                            console.error("Error al añadir la letra al diccionario:", error);
+                        }
+                    } 
+                }
             ]
         );
     };
@@ -84,11 +102,11 @@ export default function FormLevel1() {
         <View style={styles.container}>
             <View style={styles.topIconsContainer}>
                 <TouchableOpacity onPress={navigateToHelp}>
-                    <Image source={require('./images/iconos/mapachin.png')} style={styles.topIcon} />
+                    <Image source={require('../images/iconos/mapachin.png')} style={styles.topIcon} />
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={navigateToProfile}>
-                    <Image source={require('./images/iconos/perfil.png')} style={styles.topIcon} />
+                    <Image source={require('../images/iconos/perfil.png')} style={styles.topIcon} />
                 </TouchableOpacity>
             </View>
 
@@ -103,7 +121,7 @@ export default function FormLevel1() {
             <View style={styles.contentContainer}>
                 {step === 1 && (
                     <View>
-                        <Image source={require('./images/iconos/c.gif')} style={styles.image} />
+                        <Image source={require('../images/iconos/c.gif')} style={styles.image} />
                         <Text style={styles.title}>Consejos para pronunciar la letra Ñ</Text>
                         <Text style={styles.text}>
                             La letra "Ñ" se pronuncia como una combinación de la "n" y la "y" en palabras como niño o "caña". 
@@ -151,7 +169,7 @@ export default function FormLevel1() {
                 )}
 
                 {showImage && (
-                    <Image source={require('./images/iconos/mic.gif')} style={styles.recordingImage} />
+                    <Image source={require('../images/iconos/mic.gif')} style={styles.recordingImage} />
                 )}
             </View>
 
@@ -159,28 +177,28 @@ export default function FormLevel1() {
                 <View style={styles.iconContainer}>
                     <TouchableOpacity onPress={() => navigation.navigate('FormHome')}>
                         <View style={styles.iconWrapper}>
-                            <Image source={require('./images/iconos/inicio.png')} style={styles.icon} />
+                            <Image source={require('../images/iconos/inicio.png')} style={styles.icon} />
                             <Text style={styles.iconText}>Inicio</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={navigateToDiccionario}>
                         <View style={styles.iconWrapper}>
-                            <Image source={require('./images/iconos/libro.png')} style={styles.icon} />
+                            <Image source={require('../images/iconos/libro.png')} style={styles.icon} />
                             <Text style={styles.iconText}>Diccionario</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={navigateToMedals}>
                         <View style={styles.iconWrapper}>
-                            <Image source={require('./images/iconos/logros.png')} style={styles.icon} />
+                            <Image source={require('../images/iconos/logros.png')} style={styles.icon} />
                             <Text style={styles.iconText}>Logros</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={navigateToStories}>
                         <View style={styles.iconWrapper}>
-                            <Image source={require('./images/iconos/cuentos.png')} style={styles.icon} />
+                            <Image source={require('../images/iconos/cuentos.png')} style={styles.icon} />
                             <Text style={styles.iconText}>Cuentos</Text>
                         </View>
                     </TouchableOpacity>

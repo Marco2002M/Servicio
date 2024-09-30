@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, Alert } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import UserService from './Services/UserService'; // Asegúrate de importar el servicio correctamente
+import UserService from '../Services/UserService'; // Asegúrate de importar el servicio correctamente
+import AuthService from '../Services/AuthService';
 
 export default function FormLogin() {
   const [email, setEmail] = useState('');

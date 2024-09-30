@@ -2,15 +2,15 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import FormLogin from './FormLogin'; // Usa el nombre correcto del archivo
-import FormSingUp from './FormSignUp';
-import FormHome from './FormHome';
-import FormProfile from './FormProfile';
-import FormDiccionario from './FormDiccionario';
-import FormStories from './FormStories';
-import FormMedals from './FormMedals';
-import FormHelp from './FormHelp';
-import FormLevel1 from './FormLevel1';
+import FormLogin from './Forms/FormLogin.js'; // Usa el nombre correcto del archivo
+import FormSingUp from './Forms/FormSignUp';
+import FormHome from './Forms/FormHome';
+import FormProfile from './Forms/FormProfile';
+import FormDiccionario from './Forms/FormDiccionario';
+import FormStories from './Forms/FormStories';
+import FormMedals from './Forms/FormMedals';
+import FormHelp from './Forms/FormHelp';
+import FormLevel1 from './Forms/FormLevel1';
 import { StatusBar } from 'expo-status-bar';
 
 
@@ -42,6 +42,9 @@ function HomeScreen({ navigation }) {
 
 export default function App() {
   return (
+
+
+    
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
@@ -106,7 +109,12 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
+
+
+
+
   );
+  
 }
 
 

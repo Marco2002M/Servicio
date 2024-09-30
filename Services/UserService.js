@@ -20,6 +20,9 @@ const URL_BASE = "http://192.168.1.75:8080/users"; // Cambia localhost por la di
         return axios.post(URL_BASE, user);
     }
 
+
+    
+
     // Nuevo método para verificar si el correo electrónico ya existe
     async emailExists(email) {
         try {
@@ -31,6 +34,10 @@ const URL_BASE = "http://192.168.1.75:8080/users"; // Cambia localhost por la di
             throw error; // Propagar el error
         }
     }
+
+
+
+    
 }
 
 export default new UserService();

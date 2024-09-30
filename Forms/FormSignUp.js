@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import UserService from './Services/UserService';
+import UserService from '../Services/UserService';
 import { FontAwesome } from '@expo/vector-icons';
 
 export default function FormSignUp() {

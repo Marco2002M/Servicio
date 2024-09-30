@@ -34,11 +34,11 @@ export default function FormMedals() {
             {/* Iconos en las esquinas superiores */}
             <View style={styles.topIconsContainer}>
                 <TouchableOpacity onPress={() => showAlert("Mensaje del Icono Superior Izquierdo")}>
-                    <Image source={require('./images/iconos/mapachin.png')} style={styles.topIcon} />
+                    <Image source={require('../images/iconos/mapachin.png')} style={styles.topIcon} />
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={navigateToProfile}>
-                    <Image source={require('./images/iconos/perfil.png')} style={styles.topIcon} />
+                    <Image source={require('../images/iconos/perfil.png')} style={styles.topIcon} />
                 </TouchableOpacity>
             </View>
 
@@ -49,28 +49,28 @@ export default function FormMedals() {
                 <View style={styles.iconContainer}>
                     <TouchableOpacity onPress={navigateToHome}>
                         <View style={styles.iconWrapper}>
-                            <Image source={require('./images/iconos/inicio.png')} style={styles.icon} />
+                            <Image source={require('../images/iconos/inicio.png')} style={styles.icon} />
                             <Text style={styles.iconText}>Inicio</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={navigateToDiccionario}>
                         <View style={styles.iconWrapper}>
-                            <Image source={require('./images/iconos/libro.png')} style={styles.icon} />
+                            <Image source={require('../images/iconos/libro.png')} style={styles.icon} />
                             <Text style={styles.iconText}>Diccionario</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={navigateToMedals}>
                         <View style={styles.iconWrapper}>
-                            <Image source={require('./images/iconos/logros.png')} style={styles.icon} />
+                            <Image source={require('../images/iconos/logros.png')} style={styles.icon} />
                             <Text style={styles.iconText}>Logros</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={navigateToStories}>
                         <View style={styles.iconWrapper}>
-                            <Image source={require('./images/iconos/cuentos.png')} style={styles.icon} />
+                            <Image source={require('../images/iconos/cuentos.png')} style={styles.icon} />
                             <Text style={styles.iconText}>Cuentos</Text>
                         </View>
                     </TouchableOpacity>
